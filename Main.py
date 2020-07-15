@@ -11,10 +11,9 @@ component_size = []
 
 
 def bfs(V, x):
-      
     # array to store level of each node  
-    level = [None] 
-    marked = [False]
+    level = {}
+    marked = {}
     # create a queue  
     que = queue.Queue() 
   
@@ -86,7 +85,7 @@ def plot():
 
 if __name__ == "__main__":
     
-    with open('componeteG_cenario3.txt') as f:
+    with open('cenario3.txt') as f:
 
         v = f.readline().replace('\n', '')
         e = f.readline().replace('\n', '')
@@ -97,8 +96,8 @@ if __name__ == "__main__":
             add_person(v_dest, v_ori) # Adiciona a volta também para fazer um grafo não direcionado
     # print(population)
     # print(component_size)
-    values_view = population.values()
-    value_iterator = iter(values_view)
-    first_value = next(value_iterator)
+    with open("componenteG_cenario3.txt", "r") as file:
+        first_value = file.readline().splitlines()
+        print(first_value)
     bfs(v,first_value)
     plot()
