@@ -9,9 +9,12 @@ sys.setrecursionlimit(10000) # Aumenta o limite padrão de recursões, se não d
 population = {}
 visited = []
 component_size = []
+max_diametro = 0
+No_max_diametro = 0 # No que deu origem ao maior diametro encontrado
 
 
 def bfs(x):
+    # print("entra")
     # guarda as distancias de cada Node  
     level = {}
     
@@ -24,6 +27,7 @@ def bfs(x):
     # inicializa as distancias
     # dos nos pra zero  
     level[x] = 0
+    diametro = 0
   
     # marca como visitado
     population[x][0] = True
@@ -39,12 +43,21 @@ def bfs(x):
             # se 'b' nao foi visitado 
             if not population[b][0]:
                 que.put(b)
-                # distancia de b eh level de x+1  
+                # distancia de b eh level de x+1
+                if level[x] + 1 > diametro:
+                    # print(diametro)
+                    diametro = level[x] + 1
+
                 level[b] = level[x] + 1
                 population[b][0] = True
-                
-    plot(level)
+    
 
+    return diametro, level
+
+
+def reset_flg():
+    for k, v in population.items():
+        v[0] = False
 
 def add_person(v_ori, v_dest): # Cria lista de adjacencia 
     global population
@@ -66,12 +79,13 @@ def plot(level):
         else:
             quantidade_level[v] += 1
 
+
     for k, v in quantidade_level.items():
         x_array.append(k)
         y_array.append(v)
 
     plt.bar(x_array, y_array)
-    plt.xlabel('Grau')
+    plt.xlabel('Nível')
     plt.ylabel('Quantidade')
     plt.xticks(rotation='vertical')
     plt.show()
@@ -89,6 +103,16 @@ if __name__ == "__main__":
             add_person(v_ori, v_dest)
             add_person(v_dest, v_ori) # Adiciona a volta também para fazer um grafo não direcionado
 
-    with open('componenteG_cenario3.txt') as file:
-        first_value = file.readline().replace('\n', '')
-    bfs(first_value)
+    with open('componenteG_cenario3.txt') as f:
+        for l in f.readlines():
+            # print (l.replace('\n', ''))
+            di = bfs(l.replace('\n', ''))[0]
+            # print(str(di))
+            if di > max_diametro:
+                No_max_diametro = l.replace('\n', '')
+                max_diametro = di
+            reset_flg()
+
+    plot(bfs(No_max_diametro)[1])
+
+    # print(max_diametro)
