@@ -3,6 +3,8 @@ import sys
 import matplotlib.pyplot as plt
 import queue
 import operator
+from datetime import datetime
+
 
 
 sys.setrecursionlimit(10000) # Aumenta o limite padrão de recursões, se não dá erro. 
@@ -92,7 +94,8 @@ def plot(level):
 
 
 if __name__ == "__main__":
-    
+
+    start = datetime.now()
     with open('cenario3.txt') as f:
 
         v = f.readline().replace('\n', '')
@@ -113,6 +116,9 @@ if __name__ == "__main__":
                 max_diametro = di
             reset_flg()
 
+    end = datetime.now()
+    diff = end - start
+    print(diff)
     plot(bfs(No_max_diametro)[1])
 
     # print(max_diametro)
